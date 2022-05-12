@@ -1,10 +1,9 @@
-from decouple import config
-from logging import getLogger, Formatter, StreamHandler
+from logging import Formatter, StreamHandler, getLogger
 from logging.handlers import TimedRotatingFileHandler
 
-MONITOR_SLEEP_BETWEEN_CALL = config(
-    "MONITOR_SLEEP_BETWEEN_CALL", default=2.0, cast=float
-)
+from decouple import config
+
+MONITOR_SLEEP_BETWEEN_CALL = config("MONITOR_SLEEP_BETWEEN_CALL", default=2.0, cast=float)
 
 # LOGGING
 # ------------------------------------------------------------------------------
@@ -22,9 +21,7 @@ verbose_formatter = Formatter(
 
 
 # Redirect all logs to console and output.log
-file_handler = TimedRotatingFileHandler(
-    filename="output.log", when="midnight", utc=True
-)
+file_handler = TimedRotatingFileHandler(filename="output.log", when="midnight", utc=True)
 file_handler.setLevel("DEBUG")
 file_handler.setFormatter(verbose_formatter)
 

@@ -1,6 +1,6 @@
-from .base import Monitor
-
 from logging import getLogger
+
+from .base import Monitor
 
 logger = getLogger()
 

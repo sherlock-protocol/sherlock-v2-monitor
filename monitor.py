@@ -1,9 +1,9 @@
-from time import sleep
 from logging import getLogger
+from time import sleep
 from typing import List
-from monitors import Monitor, DummyMonitor
 
 import settings
+from monitors import DummyMonitor, Monitor
 
 logger = getLogger(__name__)
 
