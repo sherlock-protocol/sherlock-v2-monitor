@@ -4,6 +4,7 @@ from typing import List
 
 import settings
 from monitors import DummyMonitor, IndexerMonitor, Monitor
+from monitors.base import MonitorException
 
 logger = getLogger(__name__)
 
@@ -25,6 +26,8 @@ class Monitoring:
                     try:
                         logger.info("Running %s monitor", monitor.__class__.__name__)
                         monitor.run()
+                    except MonitorException as e:
+                        logger.error("Monitor %s has failed: %s", monitor.__class__.__name__, e)
                     except Exception as e:
                         logger.exception(e)
 

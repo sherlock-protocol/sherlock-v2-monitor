@@ -11,3 +11,9 @@ class Monitor(ABC):
         Should raise an exception with a custom message if the check fails."""
 
         pass
+
+
+class MonitorException(Exception):
+    """Custom Exception class."""
+
+    pass
