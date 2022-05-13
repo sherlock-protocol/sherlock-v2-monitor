@@ -5,7 +5,7 @@ from settings import WEB3_WSS
 
 from .base import Monitor, MonitorException
 
-logger = getLogger()
+logger = getLogger(__name__)
 
 
 class IndexerMonitor(Monitor):

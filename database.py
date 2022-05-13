@@ -5,7 +5,7 @@ import psycopg2
 
 import settings
 
-logger = getLogger()
+logger = getLogger(__name__)
 
 
 @contextlib.contextmanager

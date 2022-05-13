@@ -2,7 +2,7 @@ from logging import getLogger
 
 from .base import Monitor
 
-logger = getLogger()
+logger = getLogger(__name__)
 
 
 class DummyMonitor(Monitor):
