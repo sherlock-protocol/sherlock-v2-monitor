@@ -12,10 +12,10 @@ class Monitoring:
     monitors: List[Monitor] = []
 
     def __init__(self):
-        logger.debug("Setting up monitors")
+        logger.info("Setting up monitors")
         self.monitors.append(DummyMonitor())
         self.monitors.append(IndexerMonitor())
-        logger.debug("%s monitors set up.", len(self.monitors))
+        logger.info("%s monitors set up.", len(self.monitors))
 
     def start(self):
         logger.info("Monitor loop started")
@@ -23,12 +23,12 @@ class Monitoring:
             while True:
                 for monitor in self.monitors:
                     try:
-                        logger.debug("Running %s monitor", monitor.__class__.__name__)
+                        logger.info("Running %s monitor", monitor.__class__.__name__)
                         monitor.run()
                     except Exception as e:
                         logger.exception(e)
 
-                logger.debug("Sleeping for %ss.", settings.MONITOR_SLEEP_BETWEEN_CALL)
+                logger.info("Sleeping for %ss.", settings.MONITOR_SLEEP_BETWEEN_CALL)
                 sleep(settings.MONITOR_SLEEP_BETWEEN_CALL)
         except KeyboardInterrupt:
             pass
