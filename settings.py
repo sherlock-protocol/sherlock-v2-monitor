@@ -3,7 +3,17 @@ from logging.handlers import TimedRotatingFileHandler
 
 from decouple import config
 
+# MONITOR
+# ------------------------------------------------------------------------------
 MONITOR_SLEEP_BETWEEN_CALL = config("MONITOR_SLEEP_BETWEEN_CALL", default=2.0, cast=float)
+
+# DATABASE
+# ------------------------------------------------------------------------------
+DB_USER = config("DB_USER")
+DB_PASS = config("DB_PASS")
+DB_NAME = config("DB_NAME")
+DB_HOST = config("DB_HOST")
+DB_PORT = config("DB_PORT")
 
 # LOGGING
 # ------------------------------------------------------------------------------

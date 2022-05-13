@@ -3,7 +3,7 @@ from time import sleep
 from typing import List
 
 import settings
-from monitors import DummyMonitor, Monitor
+from monitors import DummyMonitor, IndexerMonitor, Monitor
 
 logger = getLogger(__name__)
 
@@ -11,9 +11,10 @@ logger = getLogger(__name__)
 class Monitoring:
     monitors: List[Monitor] = []
 
-    def __init__(self) -> None:
+    def __init__(self):
         logger.debug("Setting up monitors")
         self.monitors.append(DummyMonitor())
+        self.monitors.append(IndexerMonitor())
         logger.debug("%s monitors set up.", len(self.monitors))
 
     def start(self):
@@ -21,8 +22,11 @@ class Monitoring:
         try:
             while True:
                 for monitor in self.monitors:
-                    logger.debug("Running %s monitor", monitor.__class__)
-                    monitor.run()
+                    try:
+                        logger.debug("Running %s monitor", monitor.__class__.__name__)
+                        monitor.run()
+                    except Exception as e:
+                        logger.exception(e)
 
                 logger.debug("Sleeping for %ss.", settings.MONITOR_SLEEP_BETWEEN_CALL)
                 sleep(settings.MONITOR_SLEEP_BETWEEN_CALL)
