@@ -23,6 +23,11 @@ DB_NAME = config("DB_NAME")
 DB_HOST = config("DB_HOST")
 DB_PORT = config("DB_PORT")
 
+# TELEGRAM
+# ------------------------------------------------------------------------------
+TELEGRAM_BOT_TOKEN = config("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHANNEL = config("TELEGRAM_CHANNEL", cast=int)
+
 # LOGGING
 # ------------------------------------------------------------------------------
 logger = getLogger()

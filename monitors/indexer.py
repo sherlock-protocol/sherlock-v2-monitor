@@ -21,4 +21,4 @@ class IndexerMonitor(Monitor):
         # Check if indexer is up to date
         delta = highest_block - last_block
         if delta > 20:
-            raise MonitorException("Indexer is %s blocks behind!" % delta)
+            raise MonitorException("Indexer is %s blocks behind" % delta)

@@ -5,6 +5,7 @@ from typing import List
 import settings
 from monitors import DummyMonitor, IndexerMonitor, Monitor
 from monitors.base import MonitorException
+from telegram import notify_exception, notify_monitor_exception
 
 logger = getLogger(__name__)
 
@@ -28,8 +29,10 @@ class Monitoring:
                         monitor.run()
                     except MonitorException as e:
                         logger.error("Monitor %s has failed: %s", monitor.__class__.__name__, e)
+                        notify_monitor_exception(monitor_name=monitor.__class__.__name__, exception=e)
                     except Exception as e:
                         logger.exception(e)
+                        notify_exception(exception=e)
 
                 logger.info("Sleeping for %ss.", settings.MONITOR_SLEEP_BETWEEN_CALL)
                 sleep(settings.MONITOR_SLEEP_BETWEEN_CALL)

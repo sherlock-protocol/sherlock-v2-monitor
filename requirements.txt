@@ -7,3 +7,4 @@ pre-commit==2.19.0  # https://github.com/pre-commit/pre-commit
 mypy==0.950  # http://www.mypy-lang.org/
 click==8.0.3  # https://palletsprojects.com/p/click/ - Pinned to 8.0.3 to fix `black` formatter issue
 web3==5.29.0  # https://github.com/ethereum/web3.py
+requests==2.27.1  # https://requests.readthedocs.io/
