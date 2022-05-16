@@ -3,7 +3,7 @@ from time import sleep
 from typing import List
 
 import settings
-from monitors import DummyMonitor, IndexerMonitor, Monitor
+from monitors import DummyMonitor, IndexerMonitor, Monitor, Network
 from monitors.base import MonitorException
 from telegram import notify_exception, notify_monitor_exception
 
@@ -16,7 +16,7 @@ class Monitoring:
     def __init__(self):
         logger.info("Setting up monitors")
         self.monitors.append(DummyMonitor())
-        self.monitors.append(IndexerMonitor())
+        self.monitors.append(IndexerMonitor("http://localhost:5000", Network.MAINNET))
         logger.info("%s monitors set up.", len(self.monitors))
 
     def start(self):

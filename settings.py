@@ -11,17 +11,9 @@ MONITOR_SLEEP_BETWEEN_CALL = config("MONITOR_SLEEP_BETWEEN_CALL", default=2.0, c
 
 # WEB3
 # ------------------------------------------------------------------------------
-WEB3_WSS = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS"), websocket_timeout=180))
-if "goerli" in config("WEB3_PROVIDER_WSS"):
-    WEB3_WSS.middleware_onion.inject(geth_poa_middleware, layer=0)
-
-# DATABASE
-# ------------------------------------------------------------------------------
-DB_USER = config("DB_USER")
-DB_PASS = config("DB_PASS")
-DB_NAME = config("DB_NAME")
-DB_HOST = config("DB_HOST")
-DB_PORT = config("DB_PORT")
+WEB3_WSS_MAINNET = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_MAINNET"), websocket_timeout=180))
+WEB3_WSS_GOERLI = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_GOERLI"), websocket_timeout=180))
+WEB3_WSS_GOERLI.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # TELEGRAM
 # ------------------------------------------------------------------------------
