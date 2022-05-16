@@ -7,7 +7,7 @@ Smart contracts and indexer health monitoring tool.
 
 | Name | Description |
 | --- | --- |
-| IndexerMonitor | Checks if the indexer is up to date with the latest blocks. |
+| IndexerMonitor | Checks if the indexer is up to date with the latest blocks. <br> Checks if the computed APY is valid. |
 
 ## Installation
 

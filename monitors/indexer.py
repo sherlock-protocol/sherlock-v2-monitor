@@ -51,9 +51,27 @@ class IndexerMonitor(Monitor):
         if delta > 20:
             raise MonitorException("Indexer is %s blocks behind" % delta)
 
+    def check_indexer_apy(self, apy: float):
+        """Check if APY is in normal parameters.
+
+        Args:
+            apy (float): APY value as percentage
+        """
+        logger.info("APY is %s", apy)
+
+        if apy < 0:
+            raise MonitorException("APY is negative! (%s)" % apy)
+
+        if apy == 0:
+            raise MonitorException("There is no APY!")
+
+        if apy > 20:
+            raise MonitorException("APY is abnormaly high! (%s)" % apy)
+
     def run(self) -> None:
         # Fetch indexer status
         status = self.get_indexer_status()
 
         # Run all checks
         self.check_indexer_up_to_date(status["last_block"])
+        self.check_indexer_apy(status["apy"])
