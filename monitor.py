@@ -28,8 +28,9 @@ class Monitoring:
                         logger.info("Running %s monitor", monitor.__class__.__name__)
                         monitor.run()
                     except MonitorException as e:
-                        logger.error("Monitor %s has failed: %s", monitor.__class__.__name__, e)
-                        notify_monitor_exception(monitor_name=monitor.__class__.__name__, exception=e)
+                        monitor_name = f"{monitor.__class__.__name__} - {monitor.network._name_}"
+                        logger.error("Monitor %s has failed: %s", monitor_name, e)
+                        notify_monitor_exception(monitor_name=monitor_name, exception=e)
                     except Exception as e:
                         logger.exception(e)
                         notify_exception(exception=e)

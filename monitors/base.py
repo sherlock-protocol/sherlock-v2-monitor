@@ -1,8 +1,17 @@
 from abc import ABC, abstractmethod
+from enum import Enum
+
+
+class Network(Enum):
+    MAINNET = 1
+    GOERLI = 5
 
 
 class Monitor(ABC):
     """Base class for any function that is meant to monitor anything."""
+
+    # Indexer network
+    network: Network = Network.MAINNET
 
     @abstractmethod
     def run(self) -> None:

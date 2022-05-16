@@ -1,25 +1,16 @@
-from enum import Enum
 from logging import getLogger
 
 from settings import WEB3_WSS_GOERLI, WEB3_WSS_MAINNET
 from utils import requests_retry_session
 
-from .base import Monitor, MonitorException
+from .base import Monitor, MonitorException, Network
 
 logger = getLogger(__name__)
-
-
-class Network(Enum):
-    MAINNET = 1
-    GOERLI = 5
 
 
 class IndexerMonitor(Monitor):
     # Indexer URL endpoint
     url: str = None
-
-    # Indexer network
-    network: Network = Network.MAINNET
 
     def __init__(self, url: str, network: Network) -> None:
         self.url = url
