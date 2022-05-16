@@ -13,6 +13,9 @@ class Monitor(ABC):
     # Indexer network
     network: Network = Network.MAINNET
 
+    def __init__(self, network: Network) -> None:
+        self.network = network
+
     @abstractmethod
     def run(self) -> None:
         """Function which executes this monitor's checks.

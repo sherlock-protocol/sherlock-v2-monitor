@@ -13,8 +13,8 @@ class IndexerMonitor(Monitor):
     url: str = None
 
     def __init__(self, url: str, network: Network) -> None:
+        super().__init__(network)
         self.url = url
-        self.network = network
 
     def get_indexer_status(self):
         """Fetch indexer status"""

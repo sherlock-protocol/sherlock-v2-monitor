@@ -1,5 +1,5 @@
 from .base import Monitor, Network
-from .dummy import DummyMonitor
+from .dist_manager import DistManagerMonitor
 from .indexer import IndexerMonitor
 
-__all__ = [Monitor, DummyMonitor, IndexerMonitor, Network]
+__all__ = [Monitor, IndexerMonitor, Network, DistManagerMonitor]

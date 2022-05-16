@@ -1,3 +1,5 @@
+import json
+import os
 from logging import Formatter, StreamHandler, getLogger
 from logging.handlers import TimedRotatingFileHandler
 
@@ -14,6 +16,22 @@ MONITOR_SLEEP_BETWEEN_CALL = config("MONITOR_SLEEP_BETWEEN_CALL", default=2.0, c
 WEB3_WSS_MAINNET = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_MAINNET"), websocket_timeout=180))
 WEB3_WSS_GOERLI = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_GOERLI"), websocket_timeout=180))
 WEB3_WSS_GOERLI.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+# Repo location on system
+REPO = config("SHERLOCK_CORE_PATH")
+
+SHERLOCK_SHER_ADDRESS = config("SHERLOCK_SHER_ADDRESS")
+with open(os.path.join(REPO, "artifacts", "contracts", "SherToken.sol", "SherToken.json")) as json_data:
+    SHERLOCK_SHER_ABI = json.load(json_data)["abi"]
+
+SHERLOCK_DIST_MANAGER_ADDRESS = config("SHERLOCK_DIST_MANAGER_ADDRESS")
+SHERLOCK_PROTOCOL_MANAGER_ADDRESS = config("SHERLOCK_PROTOCOL_MANAGER_ADDRESS")
+with open(
+    os.path.join(
+        REPO, "artifacts", "contracts", "managers", "SherlockProtocolManager.sol", "SherlockProtocolManager.json"
+    )
+) as json_data:
+    SHERLOCK_PROTOCOL_MANAGER_ABI = json.load(json_data)["abi"]
 
 # TELEGRAM
 # ------------------------------------------------------------------------------

@@ -26,14 +26,16 @@ def notify_monitor_exception(*, monitor_name: str, exception: MonitorException):
     """
 
     # We must escape reserved Markdown characters
-    message = f"""
+    message = (
+        f"""
     Monitor *{monitor_name}* failed!
 
     {exception}
     """.replace(
-        "!", "\\!"
-    ).replace(
-        "-", "\\-"
+            "!", "\\!"
+        )
+        .replace("-", "\\-")
+        .replace(".", "\\.")
     )
 
     send_telegram_message(message=message)
