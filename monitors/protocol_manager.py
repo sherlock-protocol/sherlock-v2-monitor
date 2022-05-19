@@ -55,26 +55,35 @@ class ProtocolManagerMonitor(Monitor):
         """
         return requests_retry_session().get(f"{self.url}/protocols").json()["data"]
 
-    def get_protocol_balance(self, id: str) -> int:
-        """Fetch protocol's active balance.
+    def get_protocol_coverage_left(self, id: str) -> int:
+        """Fetch protocol's coverage left in seconds.
 
         Args:
             id (str): Protocol ID
 
         Returns:
-            int: Active balance in USDC
+            int: Coverage left in seconds
         """
-        return int(self.protocol_manager_contract.functions.activeBalance(id).call() / 10**6)
+        return int(self.protocol_manager_contract.functions.secondsOfCoverageLeft(id).call())
 
     def check_if_enough_balance(self, protocols: List[Protocol]) -> None:
-        for protocol in protocols:
-            balance = self.get_protocol_balance(protocol["bytes_identifier"])
-            logger.info("Protocol %s active balance is %s USDC", protocol["bytes_identifier"], balance)
+        found_protocols = []
 
-            if balance < 1_000:
-                raise MonitorException(
-                    "Protocol %s has an active balance of only %s USDC" % (protocol["bytes_identifier"], balance)
-                )
+        for protocol in protocols:
+            seconds_left = self.get_protocol_coverage_left(protocol["bytes_identifier"])
+            days_left = seconds_left / 60 / 60 / 24
+
+            logger.info("Protocol %s has %.1f days of coverage left.", protocol["bytes_identifier"], days_left)
+
+            if days_left < 7:
+                found_protocols.append((protocol["bytes_identifier"], days_left))
+
+        if len(found_protocols) > 0:
+            message = ""
+            for item in found_protocols:
+                message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (item[0], item[1])
+
+            raise MonitorException(message)
 
     def run(self) -> None:
         # Fetch protocols
