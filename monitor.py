@@ -3,7 +3,7 @@ from time import sleep
 from typing import List
 
 import settings
-from monitors import DistManagerMonitor, IndexerMonitor, Monitor, Network, ProtocolManagerMonitor
+from monitors import ArbRestakeMonitor, DistManagerMonitor, IndexerMonitor, Monitor, Network, ProtocolManagerMonitor
 from monitors.base import MonitorException
 from telegram import notify_exception, notify_monitor_exception
 
@@ -21,6 +21,8 @@ class Monitoring:
         self.monitors.append(DistManagerMonitor(Network.GOERLI))
         self.monitors.append(ProtocolManagerMonitor("https://mainnet.indexer.sherlock.xyz", Network.MAINNET))
         self.monitors.append(ProtocolManagerMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
+        self.monitors.append(ArbRestakeMonitor("https://mainnet.indexer.sherlock.xyz", Network.MAINNET))
+        self.monitors.append(ArbRestakeMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
         logger.info("%s monitors set up.", len(self.monitors))
 
     def start(self):

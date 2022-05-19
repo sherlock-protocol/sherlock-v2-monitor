@@ -36,6 +36,7 @@ def notify_monitor_exception(*, monitor_name: str, exception: MonitorException):
         )
         .replace("-", "\\-")
         .replace(".", "\\.")
+        .replace("|", "\\|")
     )
 
     # Split message in 4096 characters size chunks
