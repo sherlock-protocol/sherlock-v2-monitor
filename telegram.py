@@ -38,7 +38,12 @@ def notify_monitor_exception(*, monitor_name: str, exception: MonitorException):
         .replace(".", "\\.")
     )
 
-    send_telegram_message(message=message)
+    # Split message in 4096 characters size chunks
+    chunk_size = 4096
+    chunks = [message[i : i + chunk_size] for i in range(0, len(message), chunk_size)]
+
+    for chunk in chunks:
+        send_telegram_message(message=chunk)
 
 
 def notify_exception(*, exception: Exception):
