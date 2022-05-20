@@ -16,13 +16,13 @@ class Monitoring:
     def __init__(self):
         logger.info("Setting up monitors")
         self.monitors.append(IndexerMonitor("https://mainnet.indexer.sherlock.xyz", Network.MAINNET))
-        self.monitors.append(IndexerMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
+        # self.monitors.append(IndexerMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
         self.monitors.append(DistManagerMonitor(Network.MAINNET))
-        self.monitors.append(DistManagerMonitor(Network.GOERLI))
+        # self.monitors.append(DistManagerMonitor(Network.GOERLI))
         self.monitors.append(ProtocolManagerMonitor("https://mainnet.indexer.sherlock.xyz", Network.MAINNET))
-        self.monitors.append(ProtocolManagerMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
+        # self.monitors.append(ProtocolManagerMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
         self.monitors.append(ArbRestakeMonitor("https://mainnet.indexer.sherlock.xyz", Network.MAINNET))
-        self.monitors.append(ArbRestakeMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
+        # self.monitors.append(ArbRestakeMonitor("https://goerli.indexer.sherlock.xyz", Network.GOERLI))
         logger.info("%s monitors set up.", len(self.monitors))
 
     def start(self):
