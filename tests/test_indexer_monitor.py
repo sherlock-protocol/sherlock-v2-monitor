@@ -23,13 +23,13 @@ class IndexerMonitorTests(TestCase):
             self.monitor.check_indexer_up_to_date(42)
 
     def test_no_error_on_normal_apy(self) -> None:
-        self.monitor.check_indexer_apy(4.5)
-        self.monitor.check_indexer_apy(1)
-        self.monitor.check_indexer_apy(15)
+        self.monitor.check_indexer_apy(0.045)
+        self.monitor.check_indexer_apy(0.01)
+        self.monitor.check_indexer_apy(0.15)
 
     def test_raise_exception_on_negative_apy(self) -> None:
         with self.assertRaises(expected_exception=MonitorException):
-            self.monitor.check_indexer_apy(-4.5)
+            self.monitor.check_indexer_apy(-0.045)
 
     def test_raise_exception_on_zero_apy(self) -> None:
         with self.assertRaises(expected_exception=MonitorException):
@@ -37,4 +37,4 @@ class IndexerMonitorTests(TestCase):
 
     def test_raise_exception_on_high_apy(self) -> None:
         with self.assertRaises(expected_exception=MonitorException):
-            self.monitor.check_indexer_apy(25)
+            self.monitor.check_indexer_apy(0.25)
