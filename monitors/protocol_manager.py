@@ -87,7 +87,11 @@ class ProtocolManagerMonitor(Monitor):
 
     def run(self) -> None:
         # Fetch protocols
-        all_protocols = self.get_protocols()
+        try:
+            all_protocols = self.get_protocols()
+        except Exception as e:
+            logger.exception(e)
+            raise MonitorException("Failed to fetch protocols from indexer")
 
         # Filter inactive protocols
         active_protocols = [x for x in all_protocols if x["coverage_ended_at"] is None]

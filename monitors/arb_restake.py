@@ -65,7 +65,11 @@ class ArbRestakeMonitor(Monitor):
 
     def run(self) -> None:
         # Fetch indexer status
-        status = self.get_indexer_status()
+        try:
+            status = self.get_indexer_status()
+        except Exception as e:
+            logger.exception(e)
+            raise MonitorException("Failed to fetch indexer status")
 
         # Run all checks
         self.check_arb_positions(status["staking_positions"])

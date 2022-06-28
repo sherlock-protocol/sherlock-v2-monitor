@@ -61,7 +61,11 @@ class IndexerMonitor(Monitor):
 
     def run(self) -> None:
         # Fetch indexer status
-        status = self.get_indexer_status()
+        try:
+            status = self.get_indexer_status()
+        except Exception as e:
+            logger.exception(e)
+            raise MonitorException("Failed to fetch indexer status")
 
         # Run all checks
         self.check_indexer_up_to_date(status["last_block"])
