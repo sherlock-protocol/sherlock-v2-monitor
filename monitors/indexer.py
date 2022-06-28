@@ -56,7 +56,7 @@ class IndexerMonitor(Monitor):
         if apy == 0:
             raise MonitorException("There is no APY!")
 
-        if apy > 20:
+        if apy > 0.2:
             raise MonitorException("APY is abnormaly high! (%s)" % apy)
 
     def run(self) -> None:
