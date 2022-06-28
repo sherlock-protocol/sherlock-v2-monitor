@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from settings import WEB3_WSS_GOERLI, WEB3_WSS_MAINNET
+from settings import WEB3_GOERLI, WEB3_MAINNET
 from utils import requests_retry_session
 
 from .base import Monitor, MonitorException, Network
@@ -33,7 +33,7 @@ class IndexerMonitor(Monitor):
         logger.info("Last processed block is %s", last_block)
 
         # Fetch blockchain's highest block
-        provider = WEB3_WSS_MAINNET if self.network == Network.MAINNET else WEB3_WSS_GOERLI
+        provider = WEB3_MAINNET if self.network == Network.MAINNET else WEB3_GOERLI
         highest_block = provider.eth.get_block("latest")["number"]
         logger.info("Highest block is %s", highest_block)
 

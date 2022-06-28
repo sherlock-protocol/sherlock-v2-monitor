@@ -4,7 +4,7 @@ from logging import Formatter, StreamHandler, getLogger
 from logging.handlers import TimedRotatingFileHandler
 
 from decouple import config
-from web3 import Web3, WebsocketProvider
+from web3 import HTTPProvider, Web3
 from web3.middleware import geth_poa_middleware
 
 # MONITOR
@@ -13,9 +13,9 @@ MONITOR_SLEEP_BETWEEN_CALL = config("MONITOR_SLEEP_BETWEEN_CALL", default=2.0, c
 
 # WEB3
 # ------------------------------------------------------------------------------
-WEB3_WSS_MAINNET = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_MAINNET"), websocket_timeout=180))
-WEB3_WSS_GOERLI = Web3(WebsocketProvider(config("WEB3_PROVIDER_WSS_GOERLI"), websocket_timeout=180))
-WEB3_WSS_GOERLI.middleware_onion.inject(geth_poa_middleware, layer=0)
+WEB3_MAINNET = Web3(HTTPProvider(config("WEB3_PROVIDER_HTTPS_MAINNET"), request_kwargs={"timeout": 180}))
+WEB3_GOERLI = Web3(HTTPProvider(config("WEB3_PROVIDER_HTTPS_GOERLI"), request_kwargs={"timeout": 180}))
+WEB3_GOERLI.middleware_onion.inject(geth_poa_middleware, layer=0)
 
 # Repo location on system
 REPO = config("SHERLOCK_CORE_PATH")

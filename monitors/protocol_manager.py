@@ -4,7 +4,7 @@ from typing import List, TypedDict
 from web3 import Web3
 from web3.contract import Contract
 
-from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_WSS_GOERLI, WEB3_WSS_MAINNET
+from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET
 from utils import requests_retry_session
 
 from .base import Monitor, MonitorException, Network
@@ -42,7 +42,7 @@ class ProtocolManagerMonitor(Monitor):
 
         self.url = url
 
-        self.provider = WEB3_WSS_MAINNET if self.network == Network.MAINNET else WEB3_WSS_GOERLI
+        self.provider = WEB3_MAINNET if self.network == Network.MAINNET else WEB3_GOERLI
         self.protocol_manager_contract = self.provider.eth.contract(
             address=SHERLOCK_PROTOCOL_MANAGER_ADDRESS, abi=SHERLOCK_PROTOCOL_MANAGER_ABI
         )

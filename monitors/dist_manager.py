@@ -3,13 +3,7 @@ from logging import getLogger
 from web3 import Web3
 from web3.contract import Contract
 
-from settings import (
-    SHERLOCK_DIST_MANAGER_ADDRESS,
-    SHERLOCK_SHER_ABI,
-    SHERLOCK_SHER_ADDRESS,
-    WEB3_WSS_GOERLI,
-    WEB3_WSS_MAINNET,
-)
+from settings import SHERLOCK_DIST_MANAGER_ADDRESS, SHERLOCK_SHER_ABI, SHERLOCK_SHER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET
 
 from .base import Monitor, MonitorException, Network
 
@@ -26,7 +20,7 @@ class DistManagerMonitor(Monitor):
     def __init__(self, network: Network) -> None:
         super().__init__(network)
 
-        self.provider = WEB3_WSS_MAINNET if self.network == Network.MAINNET else WEB3_WSS_GOERLI
+        self.provider = WEB3_MAINNET if self.network == Network.MAINNET else WEB3_GOERLI
         self.sher_contract = self.provider.eth.contract(address=SHERLOCK_SHER_ADDRESS, abi=SHERLOCK_SHER_ABI)
 
     def get_dist_manager_sher_balance(self) -> int:

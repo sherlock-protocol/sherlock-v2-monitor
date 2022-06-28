@@ -9,15 +9,15 @@ class IndexerMonitorTests(TestCase):
     def setUp(self) -> None:
         self.monitor = IndexerMonitor("http://localhost", Network.MAINNET)
 
-    @mock.patch("monitors.indexer.WEB3_WSS_MAINNET.eth.get_block", return_value={"number": 42})
+    @mock.patch("monitors.indexer.WEB3_MAINNET.eth.get_block", return_value={"number": 42})
     def test_no_error_on_same_block_height(self, *args) -> None:
         self.monitor.check_indexer_up_to_date(42)
 
-    @mock.patch("monitors.indexer.WEB3_WSS_MAINNET.eth.get_block", return_value={"number": 62})
+    @mock.patch("monitors.indexer.WEB3_MAINNET.eth.get_block", return_value={"number": 52})
     def test_no_error_on_small_height_difference(self, *args) -> None:
         self.monitor.check_indexer_up_to_date(42)
 
-    @mock.patch("monitors.indexer.WEB3_WSS_MAINNET.eth.get_block", return_value={"number": 63})
+    @mock.patch("monitors.indexer.WEB3_MAINNET.eth.get_block", return_value={"number": 53})
     def test_raise_exception_on_significant_height_difference(self, *args) -> None:
         with self.assertRaises(expected_exception=MonitorException):
             self.monitor.check_indexer_up_to_date(42)
