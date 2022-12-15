@@ -4,7 +4,7 @@ from typing import List, TypedDict
 from web3 import Web3
 from web3.contract import Contract
 
-from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET
+from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET, PROTOCOL_METADATA
 from utils import requests_retry_session
 
 from .base import Monitor, MonitorException, Network
@@ -81,7 +81,7 @@ class ProtocolManagerMonitor(Monitor):
         if len(found_protocols) > 0:
             message = ""
             for item in found_protocols:
-                message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (item[0], item[1])
+                message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (PROTOCOL_METADATA[item[0]][1], item[1])
 
             raise MonitorException(message)
 
