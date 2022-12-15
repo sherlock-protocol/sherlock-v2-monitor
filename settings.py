@@ -1,3 +1,5 @@
+import csv
+import requests
 import json
 import os
 from logging import Formatter, StreamHandler, getLogger
@@ -6,6 +8,21 @@ from logging.handlers import TimedRotatingFileHandler
 from decouple import config
 from web3 import HTTPProvider, Web3
 from web3.middleware import geth_poa_middleware
+
+# EXTERNAL PROTOCOL CSV
+PROTOCOL_CSV_ENDPOINT = "https://raw.githubusercontent.com/sherlock-protocol/sherlock-v2-indexer/main/meta/protocols.csv"
+resp = requests.get(PROTOCOL_CSV_ENDPOINT)
+# id,tag,name,..
+# x,x,x,..
+# ....
+PROTOCOL_CSV = list(csv.reader(resp.text.splitlines()))
+# {
+#     "0x32132": ["euler", "Euler", ...].
+#     "0x32133": ["opyn", "Opyn", ...].
+# }
+PROTOCOL_METADATA = {}
+for entry in PROTOCOL_CSV[1:]:
+    PROTOCOL_METADATA[entry[0]] = entry[1:]
 
 # MONITOR
 # ------------------------------------------------------------------------------
