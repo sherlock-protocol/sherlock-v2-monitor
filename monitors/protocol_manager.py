@@ -66,6 +66,17 @@ class ProtocolManagerMonitor(Monitor):
         """
         return int(self.protocol_manager_contract.functions.secondsOfCoverageLeft(id).call())
 
+    def get_protocol_balance_left(self, id: str) -> int:
+        """Fetch protocol's balance left in USDC with 6 decimals.
+
+        Args:
+            id (str): Protocol ID
+
+        Returns:
+            int: Protocol balance left in USDC with 6 decimals
+        """
+        return int(self.protocol_manager_contract.functions.activeBalance(id).call())
+
     def check_if_enough_balance(self, protocols: List[Protocol]) -> None:
         found_protocols = []
 
@@ -76,12 +87,23 @@ class ProtocolManagerMonitor(Monitor):
             logger.info("Protocol %s has %.1f days of coverage left.", protocol["bytes_identifier"], days_left)
 
             if days_left < 7:
-                found_protocols.append((protocol["bytes_identifier"], days_left))
+                found_protocols.append(("days", protocol["bytes_identifier"], days_left))
+
+            balance_left = self.get_protocol_balance_left(protocol["bytes_identifier"])
+            balance_left = balance_left / 10**6
+
+            logger.info("Protocol %s has %.2f USDC balance left.", protocol["bytes_identifier"], balance_left)
+
+            if balance_left < 750:
+                found_protocols.append(("min", protocol["bytes_identifier"], balance_left))
 
         if len(found_protocols) > 0:
             message = ""
             for item in found_protocols:
-                message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (PROTOCOL_METADATA[item[0]][1], item[1])
+                if item[0] == "days":
+                    message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (PROTOCOL_METADATA[item[1]][1], item[2])
+                elif item[0] == "min":
+                    message += "Protocol *%s* has only *%.2f* USDC balance left\r\n\r\n" % (PROTOCOL_METADATA[item[1]][1], item[2])
 
             raise MonitorException(message)
 
