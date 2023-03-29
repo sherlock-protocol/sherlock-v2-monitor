@@ -3,7 +3,15 @@ from time import sleep
 from typing import List
 
 import settings
-from monitors import ArbRestakeMonitor, DistManagerMonitor, IndexerMonitor, Monitor, Network, ProtocolManagerMonitor
+from monitors import (
+    ArbRestakeMonitor,
+    DiscordMonitor,
+    DistManagerMonitor,
+    IndexerMonitor,
+    Monitor,
+    Network,
+    ProtocolManagerMonitor,
+)
 from monitors.base import MonitorException
 from telegram import notify_exception, notify_monitor_exception
 
@@ -16,13 +24,10 @@ class Monitoring:
     def __init__(self):
         logger.info("Setting up monitors")
         self.monitors.append(IndexerMonitor("https://mainnet-indexer.sherlock.xyz", Network.MAINNET))
-        # self.monitors.append(IndexerMonitor("https://goerli-indexer.sherlock.xyz", Network.GOERLI))
         self.monitors.append(DistManagerMonitor(Network.MAINNET))
-        # self.monitors.append(DistManagerMonitor(Network.GOERLI))
         self.monitors.append(ProtocolManagerMonitor("https://mainnet-indexer.sherlock.xyz", Network.MAINNET))
-        # self.monitors.append(ProtocolManagerMonitor("https://goerli-indexer.sherlock.xyz", Network.GOERLI))
         self.monitors.append(ArbRestakeMonitor("https://mainnet-indexer.sherlock.xyz", Network.MAINNET))
-        # self.monitors.append(ArbRestakeMonitor("https://goerli-indexer.sherlock.xyz", Network.GOERLI))
+        self.monitors.append(DiscordMonitor(Network.MAINNET))
         logger.info("%s monitors set up.", len(self.monitors))
 
     def start(self):

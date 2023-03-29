@@ -1,16 +1,18 @@
 import csv
-import requests
 import json
 import os
 from logging import Formatter, StreamHandler, getLogger
 from logging.handlers import TimedRotatingFileHandler
 
+import requests
 from decouple import config
 from web3 import HTTPProvider, Web3
 from web3.middleware import geth_poa_middleware
 
 # EXTERNAL PROTOCOL CSV
-PROTOCOL_CSV_ENDPOINT = "https://raw.githubusercontent.com/sherlock-protocol/sherlock-v2-indexer/main/meta/protocols.csv"
+PROTOCOL_CSV_ENDPOINT = (
+    "https://raw.githubusercontent.com/sherlock-protocol/sherlock-v2-indexer/main/meta/protocols.csv"
+)
 resp = requests.get(PROTOCOL_CSV_ENDPOINT)
 # id,tag,name,..
 # x,x,x,..
@@ -49,6 +51,10 @@ with open(
     )
 ) as json_data:
     SHERLOCK_PROTOCOL_MANAGER_ABI = json.load(json_data)["abi"]
+
+# DISCORD
+# ------------------------------------------------------------------------------
+DISCORD_BOT_TOKEN = config("DISCORD_BOT_TOKEN")
 
 # TELEGRAM
 # ------------------------------------------------------------------------------
