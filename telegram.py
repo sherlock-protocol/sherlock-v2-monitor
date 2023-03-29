@@ -14,7 +14,12 @@ def send_telegram_message(*, message: str):
     """
     url = "https://api.telegram.org/bot%s/sendMessage" % settings.TELEGRAM_BOT_TOKEN
     data = {"chat_id": settings.TELEGRAM_CHANNEL, "text": message, "parse_mode": "MarkdownV2"}
-    requests_retry_session().post(url, json=data)
+    res = requests_retry_session().post(url, json=data)
+    try:
+        res.raise_for_status()
+    except Exception:
+        print(res.text)
+        raise
 
 
 def notify_monitor_exception(*, monitor_name: str, exception: MonitorException):
@@ -28,9 +33,9 @@ def notify_monitor_exception(*, monitor_name: str, exception: MonitorException):
     # We must escape reserved Markdown characters
     message = (
         f"""
-    Monitor *{monitor_name}* failed!
+*{monitor_name}*
 
-    {exception}
+{exception}
     """.replace(
             "!", "\\!"
         )

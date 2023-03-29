@@ -56,11 +56,10 @@ class ArbRestakeMonitor(Monitor):
 
         if len(found_positions) > 0:
             message = "Found the following staking positions that can be arb-restaked\r\n\r\n"
-            message += "```   ID     | Time left until arb-restake\r\n"
+            message += "   ID     | Time left until arb-restake\r\n"
             message += "--------------------------------------------\r\n"
             for item in found_positions:
-                message += "{:^9s} | {:>10s} days\r\n".format(str(item[0]), str(item[1]))
-            message += "```"
+                message += "{:^9s} {:>10s} days\r\n".format(str(item[0]), str(item[1]))
             raise MonitorException(message)
 
     def run(self) -> None:
