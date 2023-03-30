@@ -43,23 +43,24 @@ class ArbRestakeMonitor(Monitor):
 
         for position in positions:
             lockup_end = datetime.fromtimestamp(position["lockup_end"])
+            balance = int(position["usdc"]) / 1e6
 
             # Positions can be arb-restaked after 2 weeks after their lockup ends
             arb_period_start = lockup_end + timedelta(days=14)
             days_until_arb = (arb_period_start - now).days
 
             if days_until_arb < 7:
-                found_positions.append((position["id"], days_until_arb))
+                found_positions.append((position["id"], days_until_arb, balance))
 
         # Sort by time left
         found_positions = sorted(found_positions, key=lambda x: x[1])
 
         if len(found_positions) > 0:
             message = "Found the following staking positions that can be arb-restaked\r\n\r\n"
-            message += "   ID     | Time left until arb-restake\r\n"
-            message += "--------------------------------------------\r\n"
+            message += "   ID     | Time left until arb-restake | USDC\r\n"
+            message += "------------------------------------------------------------\r\n"
             for item in found_positions:
-                message += "{:^9s} {:>10s} days\r\n".format(str(item[0]), str(item[1]))
+                message += "{:^9s} {:>10s} days {:>20,} USDC\r\n".format(str(item[0]), str(item[1]), item[2])
             raise MonitorException(message)
 
     def run(self) -> None:
