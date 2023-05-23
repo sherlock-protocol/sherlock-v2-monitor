@@ -86,7 +86,7 @@ class ProtocolManagerMonitor(Monitor):
 
             logger.info("Protocol %s has %.1f days of coverage left.", protocol["bytes_identifier"], days_left)
 
-            if days_left < 7:
+            if days_left <= 10:
                 found_protocols.append(("days", protocol["bytes_identifier"], days_left))
 
             balance_left = self.get_protocol_balance_left(protocol["bytes_identifier"])
