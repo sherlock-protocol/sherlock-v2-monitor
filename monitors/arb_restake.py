@@ -49,6 +49,10 @@ class ArbRestakeMonitor(Monitor):
             arb_period_start = lockup_end + timedelta(days=14)
             days_until_arb = (arb_period_start - now).days
 
+            # Skip positions less than 2 USDC (which won't be restaked)
+            if balance < 2:
+                continue
+
             if days_until_arb < 7:
                 found_positions.append((position["id"], days_until_arb, balance))
 
