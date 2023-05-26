@@ -42,6 +42,10 @@ class DiscordMonitor(Monitor):
 
         message = ""
         for category in categories:
+            # These groups have already been acknowledged, so we skip checking them
+            if category['id'] in [1111560225594540094]:
+                continue
+
             category_channels = [x for x in channels if x["parent_id"] == category["id"]]
             logger.info("Category %s has %s channels" % (category["name"], len(category_channels)))
 
