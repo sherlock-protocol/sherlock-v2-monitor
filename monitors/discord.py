@@ -43,7 +43,7 @@ class DiscordMonitor(Monitor):
         message = ""
         for category in categories:
             # These groups have already been acknowledged, so we skip checking them
-            if category['id'] in [1111560225594540094]:
+            if category['id'] in [922944491520929813]:
                 continue
 
             category_channels = [x for x in channels if x["parent_id"] == category["id"]]
