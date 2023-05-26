@@ -39,11 +39,13 @@ class DiscordMonitor(Monitor):
 
         channels = self.get_channels()
         categories = [x for x in channels if x["type"] == 4]
+        ignored_categories = ["922944491520929813"]
 
         message = ""
         for category in categories:
             # These groups have already been acknowledged, so we skip checking them
-            if category['id'] in [922944491520929813]:
+            if category["id"] in ignored_categories:
+                logger.info("Skipping category %s" % (category["name"]))
                 continue
 
             category_channels = [x for x in channels if x["parent_id"] == category["id"]]
