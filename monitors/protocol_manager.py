@@ -1,10 +1,12 @@
+import csv
 from logging import getLogger
 from typing import List, TypedDict
 
+import requests
 from web3 import Web3
 from web3.contract import Contract
 
-from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET, PROTOCOL_METADATA
+from settings import SHERLOCK_PROTOCOL_MANAGER_ABI, SHERLOCK_PROTOCOL_MANAGER_ADDRESS, WEB3_GOERLI, WEB3_MAINNET
 from utils import requests_retry_session
 
 from .base import Monitor, MonitorException, Network
@@ -47,6 +49,25 @@ class ProtocolManagerMonitor(Monitor):
             address=SHERLOCK_PROTOCOL_MANAGER_ADDRESS, abi=SHERLOCK_PROTOCOL_MANAGER_ABI
         )
 
+    def get_protocol_metadata(self) -> dict:
+        # TODO: Update the Protocol class to include these fields and add this to the `get_protocols` function
+
+        # EXTERNAL PROTOCOL CSV
+        PROTOCOL_CSV_ENDPOINT = (
+            "https://raw.githubusercontent.com/sherlock-protocol/sherlock-v2-indexer/main/meta/protocols.csv"
+        )
+        resp = requests.get(PROTOCOL_CSV_ENDPOINT)
+        # id,tag,name,..
+        # x,x,x,..
+        # ....
+        PROTOCOL_CSV = list(csv.reader(resp.text.splitlines()))
+        # {
+        #     "0x32132": ["euler", "Euler", ...].
+        #     "0x32133": ["opyn", "Opyn", ...].
+        # }
+
+        return {entry[0]: entry[1:] for entry in PROTOCOL_CSV[1:]}
+
     def get_protocols(self) -> List[Protocol]:
         """Fetch protocols from indexer.
 
@@ -78,6 +99,7 @@ class ProtocolManagerMonitor(Monitor):
         return int(self.protocol_manager_contract.functions.activeBalance(id).call())
 
     def check_if_enough_balance(self, protocols: List[Protocol]) -> None:
+        protocol_metadata = self.get_protocol_metadata()
         found_protocols = []
 
         for protocol in protocols:
@@ -101,9 +123,15 @@ class ProtocolManagerMonitor(Monitor):
             message = ""
             for item in found_protocols:
                 if item[0] == "days":
-                    message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (PROTOCOL_METADATA[item[1]][1], item[2])
+                    message += "Protocol *%s* has *%.1f* days of coverage left\r\n\r\n" % (
+                        protocol_metadata[item[1]][1],
+                        item[2],
+                    )
                 elif item[0] == "min":
-                    message += "Protocol *%s* has only *%.2f* USDC balance left\r\n\r\n" % (PROTOCOL_METADATA[item[1]][1], item[2])
+                    message += "Protocol *%s* has only *%.2f* USDC balance left\r\n\r\n" % (
+                        protocol_metadata[item[1]][1],
+                        item[2],
+                    )
 
             raise MonitorException(message)
 

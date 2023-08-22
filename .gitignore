@@ -169,3 +169,5 @@ cython_debug/
 output.log*
 debug_output.log*
 .vscode
+.idea
+*.ipynb
