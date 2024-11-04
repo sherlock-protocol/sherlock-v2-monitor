@@ -39,7 +39,11 @@ class DiscordMonitor(Monitor):
 
         channels = self.get_channels()
         categories = [x for x in channels if x["type"] == 4]
-        ignored_categories = ["922944491520929813"]
+        ignored_categories = [
+            "922944491520929813",  # Teams
+            "1111560225594540094",  # Teams 2
+            "1229443857184198778",  # Teams 3
+        ]
 
         message = ""
         for category in categories:
@@ -52,7 +56,10 @@ class DiscordMonitor(Monitor):
             logger.info("Category %s has %s channels" % (category["name"], len(category_channels)))
 
             if len(category_channels) >= threshold:
-                message += "Category %s has %s channels\r\n\r\n" % (category["name"], len(category_channels))
+                message += "Category %s has %s channels\r\n\r\n" % (
+                    category["name"],
+                    len(category_channels),
+                )
 
         if message != "":
             raise MonitorException(message)
